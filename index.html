@@ -224,6 +224,18 @@
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .result h2:focus { outline: none; }
 
+  /* Floating cue after the reveal; leaves once the invitation is on screen */
+  .scroll-cue {
+    position: fixed; z-index: 22; left: 0; right: 0; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    width: fit-content; margin-inline: auto; display: inline-flex; align-items: center; gap: .5rem;
+    font: 700 1.05rem var(--font-body); padding: .8rem 1.5rem; border-radius: 999px; cursor: pointer;
+    background: var(--gold); color: #2a2440; border: 2.5px solid var(--ink); box-shadow: 0 5px 0 var(--ink);
+    animation: rise .6s cubic-bezier(.3, 1.6, .5, 1) both;
+  }
+  .scroll-cue span { display: inline-block; animation: nudge-down 1.2s ease-in-out infinite; }
+  .scroll-cue:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .invite-top h3:focus { outline: none; }
+
   /* Sparkles that fly off the finger while scratching */
   .spark {
     position: fixed; z-index: 15; width: 9px; height: 9px; border-radius: 2px; pointer-events: none;
@@ -256,6 +268,7 @@
   @keyframes rumble { 25% { transform: translate(-2px, 1px) rotate(-.4deg); } 75% { transform: translate(2px, -1px) rotate(.4deg); } }
   @keyframes wiggle { 0%, 60%, 100% { transform: none; } 70% { transform: rotate(-8deg) scale(1.05); } 80% { transform: rotate(8deg) scale(1.05); } 90% { transform: rotate(-4deg); } }
   @keyframes slide { to { background-position: 300% 0; } }
+  @keyframes nudge-down { 50% { transform: translateY(5px); } }
   @keyframes spark { to { transform: translate(var(--dx), var(--dy)) rotate(200deg) scale(.2); opacity: 0; } }
   @keyframes rise { from { opacity: 0; transform: translateY(24px) scale(.7); } }
   @keyframes count { from { opacity: 0; transform: scale(2.2) rotate(-10deg); } 60% { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(.7); } }
@@ -357,7 +370,7 @@
         <path d="M6 50c8 6 14-6 22 0s14-6 22 0 16-6 24 0" fill="none" style="stroke:var(--gold)" stroke-width="4"/>
       </svg>
       <p class="label">You're invited to a double celebration</p>
-      <h3 id="invite-title">Daddy Larry's Birthday</h3>
+      <h3 id="invite-title" tabindex="-1">Daddy Larry's Birthday</h3>
       <p>Come celebrate the big news and Daddy's birthday with Romaica and Larry.</p>
     </div>
     <div class="tear" aria-hidden="true"></div>
@@ -382,6 +395,8 @@
     <button class="btn primary" id="reveal" hidden>Too hard? Skip to the reveal</button>
     <button class="btn" id="reset" hidden>Play again</button>
   </div>
+
+  <button class="scroll-cue" id="scroll-cue" hidden>See your invitation <span aria-hidden="true">↓</span></button>
 </main>
 
 <script>
@@ -615,6 +630,8 @@
     $("invite-countdown").textContent = days > 1 ? `${days} days to go!` : days === 1 ? "Tomorrow!" : days === 0 ? "It's today!" : "";
     $("announce").textContent = `${ANSWER.headline} ${$("verdict").textContent}`;
     $("headline").focus({ preventScroll: true });
+    // Let the answer land first, then point to the invitation if it's still below the fold.
+    cueTimer = setTimeout(() => { if (revealed && $("invite").getBoundingClientRect().top > innerHeight * .8) cue.hidden = false; }, 1800);
     fanfare(); buzz([100, 50, 200]);
     if (!reduceMotion) {
       const f = document.createElement("div"); f.className = "flash";
@@ -637,9 +654,19 @@
     scratch.classList.remove("gone");
     $("mystery").hidden = false; $("answer").hidden = true;
     clearTimeout(skipTimer); $("reveal").hidden = true; $("reset").hidden = true; $("result").hidden = true; $("invite").hidden = true;
+    clearTimeout(cueTimer); cue.hidden = true;
     setMeter(0); paintCover();
     scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     $("pick-boy").focus({ preventScroll: true });
+  });
+
+  // --- Scroll cue: hides itself once the invitation is in view
+  const cue = $("scroll-cue");
+  let cueTimer = null;
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) cue.hidden = true; }, { threshold: .25 }).observe($("invite"));
+  cue.addEventListener("click", () => {
+    $("invite").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    $("invite-title").focus({ preventScroll: true });
   });
 
   // --- Celebration in the answer's color: two confetti cannons, a second volley, and rising balloons
