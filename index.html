@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Romaica and Larry's baby: boy or girl? Pick your team, scratch the card and find out. Then join us for Daddy Larry's birthday on November 21, 2026.">
+<meta property="og:title" content="Boy or Girl? Romaica &amp; Larry's Gender Reveal">
+<meta property="og:description" content="Pick your team, scratch the card and find out. Then join us for Daddy Larry's birthday on Saturday, November 21, 2026 at 5 PM.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
+<style>
+  :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body { margin: 0; }
+  [hidden] { display: none !important; }
+</style>
+<title>Boy or Girl Reveal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Outfit:wght@400;500;700&display=swap">
+<style>
+  /* Layout: a paper-party stage — bunting and balloons over a lilac dotted page, puffy sticker-style controls with ink outlines.
+     Pick a team, scratch the mystery gift, 3-2-1, then the page takes the answer's color and the party invitation drops in. */
+  :root {
+    --bg: #f7f4fa;          /* lilac: halfway between blue and pink, so nothing is given away */
+    --dot: #e6dff0;
+    --surface: #ffffff;
+    --fg: #2a2440;
+    --muted: #6e6884;
+    --ink: #2a2440;         /* outlines and offset shadows */
+    --line: #ddd5ea;
+    --gold: #f2b84b;
+    --boy: #2d64d2;
+    --boy-soft: #dce8ff;
+    --girl: #cc3d70;
+    --girl-soft: #ffe1ec;
+    --accent: #7c6aa6;
+    --on-accent: #ffffff;
+    --it: var(--accent);
+    --it-soft: var(--surface);
+    --font-display: "Bagel Fat One", "Arial Rounded MT Bold", system-ui, sans-serif;
+    --font-body: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1824; --dot: #2a2636; --surface: #2a2638; --fg: #f3f0fa; --muted: #aaa3bf; --ink: #08070c; --line: #3a3550;
+      --gold: #f5c66a; --boy: #74a4ff; --boy-soft: #1f2d4f; --girl: #ff8ab0; --girl-soft: #4a2132;
+      --accent: #b3a3e0; --on-accent: #17141f; color-scheme: dark;
+    }
+  }
+  body.picked-boy { --accent: var(--boy); }
+  body.picked-girl { --accent: var(--girl); }
+  body.revealed { --accent: var(--it); --bg: color-mix(in srgb, var(--it) 10%, var(--surface)); --dot: color-mix(in srgb, var(--it) 22%, var(--surface)); }
+
+  * { box-sizing: border-box; }
+  body {
+    background: radial-gradient(var(--dot) 1.5px, transparent 1.6px) 0 0 / 22px 22px, var(--bg);
+    color: var(--fg);
+    font: 400 1rem/1.55 var(--font-body);
+    min-height: 100vh;
+    padding-block: 0 4rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+    transition: background-color .8s ease;
+  }
+  main { max-width: 34rem; margin: 0 auto; display: grid; gap: 2rem; text-align: center; }
+
+  /* Bunting across the top */
+  .bunting { display: block; width: 100%; max-width: 46rem; height: auto; margin: 0 auto; }
+  .bunting polygon { animation: flutter 3s ease-in-out infinite; transform-box: fill-box; transform-origin: top center; }
+  .topbar { display: flex; justify-content: flex-end; margin: -1.5rem 0 -1rem; }
+
+  /* Hero */
+  header { position: relative; padding-inline: 3.5rem; }
+  .sticker {
+    display: inline-block; margin: 0; padding: .35rem 1rem; border-radius: 999px;
+    background: var(--gold); color: #2a2440; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+    font-weight: 700; font-size: .9rem; letter-spacing: .04em; transform: rotate(-3deg);
+  }
+  h1 { font: 400 clamp(2.8rem, 10vw, 4.6rem)/1 var(--font-display); margin: 1rem 0 0; text-wrap: balance; }
+  h1 .boy, h1 .girl { display: inline-block; text-shadow: 3px 3px 0 var(--ink); }
+  h1 .boy { color: var(--boy); transform: rotate(-4deg); }
+  h1 .girl { color: var(--girl); transform: rotate(3deg); }
+  h1 .or { font-family: var(--font-body); font-weight: 700; font-size: .4em; color: var(--muted); vertical-align: middle; padding-inline: .25em; }
+  .lede { color: var(--muted); margin: 1rem auto 0; max-width: 26rem; text-wrap: pretty; }
+  .balloon { position: absolute; top: 2.5rem; width: 3.6rem; height: auto; animation: bob 3.2s ease-in-out infinite; }
+  .balloon.left { left: 0; rotate: -10deg; }
+  .balloon.right { right: 0; rotate: 10deg; animation-delay: -1.6s; }
+
+  /* Steps */
+  .panel { display: grid; gap: .9rem; }
+  .step { margin: 0; font-weight: 700; font-size: 1.15rem; display: inline-flex; align-items: center; gap: .6rem; justify-self: center; }
+  .step .num {
+    display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%;
+    background: var(--surface); border: 2.5px solid var(--ink); box-shadow: 2px 2px 0 var(--ink);
+    font: 400 1rem/1 var(--font-display);
+  }
+  .chips { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .chip {
+    font: 700 1.05rem var(--font-body); color: var(--fg);
+    background: var(--surface); border: 2.5px solid var(--ink); border-radius: 999px;
+    padding: .8rem 1.5rem; cursor: pointer; display: inline-flex; align-items: center; gap: .55rem;
+    box-shadow: 0 5px 0 var(--ink); transition: transform .12s, box-shadow .12s, background-color .2s, opacity .2s;
+  }
+  .chip:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+  .chip:active:not(:disabled), .chip[aria-pressed="true"] { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+  .chip:disabled { cursor: default; }
+  .chip:disabled[aria-pressed="false"] { opacity: .4; }
+  .chip .dot { width: .85rem; height: .85rem; border-radius: 50%; border: 2px solid var(--ink); }
+  .chip[data-pick="boy"] .dot { background: var(--boy); }
+  .chip[data-pick="girl"] .dot { background: var(--girl); }
+  .chip[aria-pressed="true"][data-pick="boy"] { background: var(--boy-soft); }
+  .chip[aria-pressed="true"][data-pick="girl"] { background: var(--girl-soft); }
+  body:not(.picked-boy):not(.picked-girl) .chip { animation: nudge 2s ease-in-out infinite; }
+  body:not(.picked-boy):not(.picked-girl) .chip + .chip { animation-delay: .25s; }
+  .chips.shake { animation: shake .45s; }
+  .chip:focus-visible, .btn:focus-visible, .lock:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .guess-note { margin: 0; font-size: .95rem; color: var(--muted); min-height: 1.5em; }
+
+  /* Scratch card. Under the cover sits a wrapped gift, not the answer. */
+  .card {
+    position: relative; aspect-ratio: 4 / 3; max-width: 100%;
+    border-radius: 1.75rem; overflow: hidden; background: var(--it-soft);
+    border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; transition: background-color .6s ease;
+  }
+  .card.unlocked { animation: pop .5s cubic-bezier(.3, 1.6, .5, 1); }
+  .card.rumble { animation: rumble .25s linear infinite; }
+  .card.rumble.hard { animation-duration: .12s; }
+  .mystery {
+    position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .5rem;
+    background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--gold) 16%, var(--surface)) 0 18px, var(--surface) 18px 36px);
+  }
+  .mystery svg { width: 7rem; height: 7rem; animation: wiggle 1.6s ease-in-out infinite; }
+  .mystery p { margin: 0; font: 400 clamp(1.3rem, 5vw, 1.8rem)/1.1 var(--font-display); color: var(--fg); }
+  .answer { position: absolute; inset: 0; display: grid; place-content: center; gap: .25rem; color: var(--it); }
+  .answer small { font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .9rem; color: var(--fg); }
+  .answer strong { font: 400 clamp(3.2rem, 15vw, 6rem)/1 var(--font-display); text-shadow: 4px 4px 0 var(--ink); }
+  .answer svg { width: 3.75rem; height: 3.75rem; margin: 0 auto .5rem; }
+  .answer > * { animation: rise .7s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .answer small { animation-delay: .1s; }
+  .answer strong { animation-delay: .2s; }
+  canvas.scratch { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; transition: opacity .6s ease; }
+  canvas.scratch.gone { opacity: 0; pointer-events: none; }
+  .lock {
+    position: absolute; inset: 0; display: grid; place-content: center; gap: .6rem; justify-items: center;
+    border: 0; font: 700 1.05rem var(--font-body); color: #fff; cursor: pointer;
+    background: rgba(30, 24, 48, .5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: opacity .35s ease;
+  }
+  .lock svg { width: 2.8rem; height: 2.8rem; }
+  .lock.open { opacity: 0; pointer-events: none; }
+
+  .meter { display: grid; gap: .45rem; }
+  .meter-label { display: flex; justify-content: space-between; gap: 1rem; font-size: .95rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .meter-label #teaser { font-weight: 700; color: var(--fg); text-align: left; }
+  .meter-track { height: 1rem; border-radius: 999px; background: var(--surface); border: 2.5px solid var(--ink); overflow: hidden; }
+  .meter-fill {
+    height: 100%; width: 0; transition: width .25s ease;
+    background: linear-gradient(90deg, var(--boy), var(--gold), var(--girl), var(--boy)); background-size: 300% 100%;
+    animation: slide 2s linear infinite;
+  }
+
+  .btn {
+    font: 700 .95rem var(--font-body); border-radius: 999px; padding: .7rem 1.4rem; cursor: pointer;
+    border: 2.5px solid var(--ink); background: var(--surface); color: var(--fg); box-shadow: 0 4px 0 var(--ink);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .btn.primary { background: var(--accent); color: var(--on-accent); }
+  .btn.small { padding: .35rem .9rem; font-size: .85rem; box-shadow: 0 3px 0 var(--ink); }
+  .actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+  .result { display: grid; gap: .5rem; }
+  .result h2 { font: 400 clamp(1.8rem, 6.5vw, 2.6rem)/1.1 var(--font-display); color: var(--it); margin: 0; text-wrap: balance; text-shadow: 2px 2px 0 var(--ink); }
+  .result p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+
+  /* Invitation: a party card with a perforated tear line between the story and the details */
+  .invite {
+    position: relative; text-align: center; background: var(--surface);
+    border: 3px solid var(--ink); border-radius: 1.75rem; box-shadow: 6px 6px 0 var(--ink);
+    overflow: hidden; animation: rise .8s .5s cubic-bezier(.3, 1.6, .5, 1) both;
+  }
+  .invite-top {
+    position: relative; display: grid; gap: .5rem; justify-items: center; padding: 1.75rem 1.25rem 1.5rem;
+    background:
+      radial-gradient(circle at 8% 10%, var(--gold) 0 5px, transparent 6px),
+      radial-gradient(circle at 92% 12%, var(--surface) 0 4px, transparent 5px),
+      radial-gradient(circle at 22% 24%, var(--surface) 0 3px, transparent 4px),
+      radial-gradient(circle at 78% 22%, var(--gold) 0 6px, transparent 7px),
+      var(--it);
+    color: var(--on-accent);
+  }
+  .invite-top .cake { width: 5.5rem; height: auto; animation: bob 3s ease-in-out infinite; }
+  .invite-top .label { margin: 0; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; }
+  .invite-top h3 { margin: 0; font: 400 clamp(1.9rem, 7.5vw, 2.6rem)/1.05 var(--font-display); text-wrap: balance; text-shadow: 3px 3px 0 var(--ink); color: #fff; }
+  .invite-top p { margin: 0; max-width: 24rem; text-wrap: pretty; }
+  .tear { height: 0; border-top: 3px dashed var(--ink); margin-inline: 1.25rem; position: relative; }
+  .tear::before, .tear::after {
+    content: ""; position: absolute; top: -14px; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--ink);
+  }
+  .tear::before { left: calc(-1.25rem - 16px); }
+  .tear::after { right: calc(-1.25rem - 16px); }
+  .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; padding: 1.25rem; }
+  .detail { display: grid; gap: .3rem; justify-items: center; min-width: 0; }
+  .detail svg { width: 2.4rem; height: 2.4rem; }
+  .detail b { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .detail span { font-weight: 700; line-height: 1.25; }
+  .countdown-pill {
+    position: absolute; top: 1rem; right: 1rem; margin: 0; padding: .3rem .8rem; border-radius: 999px;
+    background: var(--gold); color: #2a2440; border: 2.5px solid var(--ink); box-shadow: 2px 2px 0 var(--ink);
+    font-weight: 700; font-size: .85rem; transform: rotate(6deg); font-variant-numeric: tabular-nums;
+  }
+  .countdown-pill:empty { display: none; }
+  .see-you { margin: 0; padding: 0 1.25rem 1.4rem; font: 400 1.2rem/1.2 var(--font-display); color: var(--it); }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .result h2:focus { outline: none; }
+
+  /* Sparkles that fly off the finger while scratching */
+  .spark {
+    position: fixed; z-index: 15; width: 9px; height: 9px; border-radius: 2px; pointer-events: none;
+    border: 1.5px solid var(--ink); animation: spark .7s ease-out forwards;
+  }
+
+  /* 3-2-1 overlay */
+  .countdown {
+    position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; align-content: center; gap: 1rem;
+    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .countdown p { margin: 0; font: 400 1.6rem var(--font-display); color: var(--muted); }
+  .countdown span { font: 400 clamp(8rem, 40vw, 16rem)/1 var(--font-display); color: var(--gold); text-shadow: 6px 6px 0 var(--ink); animation: count .9s ease-out both; }
+  .flash { position: fixed; inset: 0; z-index: 25; background: var(--it); pointer-events: none; animation: flash .9s ease-out forwards; }
+  #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+
+  @media (max-width: 480px) {
+    header { padding-inline: 2.5rem; }
+    .balloon { width: 2.6rem; top: 3.5rem; }
+    .details { grid-template-columns: 1fr; text-align: left; }
+    .detail { grid-template-columns: auto 1fr; justify-items: start; align-items: center; column-gap: .75rem; }
+    .detail svg { grid-row: span 2; }
+  }
+
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  @keyframes flutter { 50% { transform: rotate(4deg); } }
+  @keyframes nudge { 0%, 70%, 100% { transform: none; } 80% { transform: translateY(-4px) scale(1.04); } }
+  @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+  @keyframes pop { 0% { transform: scale(.94); } 100% { transform: none; } }
+  @keyframes rumble { 25% { transform: translate(-2px, 1px) rotate(-.4deg); } 75% { transform: translate(2px, -1px) rotate(.4deg); } }
+  @keyframes wiggle { 0%, 60%, 100% { transform: none; } 70% { transform: rotate(-8deg) scale(1.05); } 80% { transform: rotate(8deg) scale(1.05); } 90% { transform: rotate(-4deg); } }
+  @keyframes slide { to { background-position: 300% 0; } }
+  @keyframes spark { to { transform: translate(var(--dx), var(--dy)) rotate(200deg) scale(.2); opacity: 0; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px) scale(.7); } }
+  @keyframes count { from { opacity: 0; transform: scale(2.2) rotate(-10deg); } 60% { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(.7); } }
+  @keyframes flash { from { opacity: .7; } to { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<svg class="bunting" id="bunting" viewBox="0 0 400 64" aria-hidden="true"></svg>
+
+<main>
+  <p class="sr-only" role="status" id="announce"></p>
+  <div class="topbar"><button class="btn small" id="sound" aria-label="Sound" aria-pressed="true">Sound on</button></div>
+
+  <header>
+    <svg class="balloon left" viewBox="0 0 60 130" aria-hidden="true">
+      <path d="M30 72c-6 18 8 30 0 56" fill="none" style="stroke:var(--ink)" stroke-width="2"/>
+      <ellipse cx="30" cy="36" rx="26" ry="32" style="fill:var(--boy);stroke:var(--ink)" stroke-width="3"/>
+      <path d="M25 67h10l-5 6z" style="fill:var(--boy);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="20" cy="24" rx="5" ry="10" fill="#fff" fill-opacity=".55" transform="rotate(-20 20 24)"/>
+    </svg>
+    <svg class="balloon right" viewBox="0 0 60 130" aria-hidden="true">
+      <path d="M30 72c6 18-8 30 0 56" fill="none" style="stroke:var(--ink)" stroke-width="2"/>
+      <ellipse cx="30" cy="36" rx="26" ry="32" style="fill:var(--girl);stroke:var(--ink)" stroke-width="3"/>
+      <path d="M25 67h10l-5 6z" style="fill:var(--girl);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="20" cy="24" rx="5" ry="10" fill="#fff" fill-opacity=".55" transform="rotate(-20 20 24)"/>
+    </svg>
+    <p class="sticker">Romaica + Larry's baby</p>
+    <h1><span class="boy">Boy</span><span class="or">or</span><span class="girl">Girl</span>?</h1>
+    <p class="lede">Pick your team, then scratch off the thick foil to fill the suspense meter. Only a full meter unlocks the answer.</p>
+  </header>
+
+  <section class="panel" aria-labelledby="guess-label">
+    <p class="step" id="guess-label"><span class="num" aria-hidden="true">1</span>What's your guess?</p>
+    <div class="chips" id="chips">
+      <button class="chip" id="pick-boy" data-pick="boy" aria-pressed="false"><span class="dot"></span>Team Boy</button>
+      <button class="chip" id="pick-girl" data-pick="girl" aria-pressed="false"><span class="dot"></span>Team Girl</button>
+    </div>
+    <p class="guess-note" id="guess-note" aria-live="polite">You need to pick a team to unlock the card.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="scratch-label">
+    <p class="step" id="scratch-label"><span class="num" aria-hidden="true">2</span>Scratch to build the suspense</p>
+    <div class="card" id="card">
+      <div class="mystery" id="mystery">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="10" y="28" width="44" height="28" rx="3" style="fill:var(--boy);stroke:var(--ink)" stroke-width="2.5"/>
+          <rect x="7" y="20" width="50" height="10" rx="3" style="fill:var(--girl);stroke:var(--ink)" stroke-width="2.5"/>
+          <rect x="29" y="20" width="6" height="36" style="fill:var(--gold);stroke:var(--ink)" stroke-width="2"/>
+          <path d="M32 20c-6-10-16-8-12-2 2 3 8 2 12 2zM32 20c6-10 16-8 12-2-2 3-8 2-12 2z" style="fill:var(--gold);stroke:var(--ink)" stroke-width="2"/>
+          <text x="32" y="49" text-anchor="middle" font-size="14" font-family="Bagel Fat One, sans-serif" fill="#fff">?</text>
+        </svg>
+        <p>Keep scratching!</p>
+      </div>
+      <div class="answer" id="answer" hidden>
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="32" cy="36" r="20" fill="currentColor" fill-opacity=".14"/>
+          <circle cx="25" cy="34" r="1.8" fill="currentColor"/><circle cx="39" cy="34" r="1.8" fill="currentColor"/>
+          <path d="M26 43c3.5 3 8.5 3 12 0"/><path d="M32 16c-3-6 4-10 6-5"/>
+        </svg>
+        <small>It's a</small>
+        <strong id="answer-word"></strong>
+      </div>
+      <canvas class="scratch" id="scratch" role="img" aria-label="Scratch-off cover. Drag across it to fill the suspense meter. A Skip button appears after one minute."></canvas>
+      <button class="lock" id="lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        </svg>
+        Pick a team to unlock
+      </button>
+    </div>
+
+    <div class="meter">
+      <div class="meter-label"><span id="teaser" aria-live="polite">Suspense meter</span><span id="meter-pct">0%</span></div>
+      <div class="meter-track"><div class="meter-fill" id="meter-fill"></div></div>
+    </div>
+  </section>
+
+  <section class="result" id="result" hidden>
+    <h2 id="headline" tabindex="-1"></h2>
+    <p id="verdict"></p>
+  </section>
+
+  <section class="invite" id="invite" hidden aria-labelledby="invite-title">
+    <p class="countdown-pill" id="invite-countdown"></p>
+    <div class="invite-top">
+      <svg class="cake" viewBox="0 0 80 72" aria-hidden="true">
+        <path d="M24 22v-8M40 22v-8M56 22v-8" style="stroke:var(--ink)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M24 14v-6M40 14v-6M56 14v-6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M24 3c-2 3 2 4 0 6M40 3c-2 3 2 4 0 6M56 3c-2 3 2 4 0 6" style="stroke:var(--gold)" stroke-width="3" stroke-linecap="round"/>
+        <rect x="12" y="22" width="56" height="20" rx="5" style="fill:var(--girl-soft);stroke:var(--ink)" stroke-width="3"/>
+        <rect x="6" y="42" width="68" height="26" rx="5" style="fill:#fff;stroke:var(--ink)" stroke-width="3"/>
+        <path d="M6 50c8 6 14-6 22 0s14-6 22 0 16-6 24 0" fill="none" style="stroke:var(--gold)" stroke-width="4"/>
+      </svg>
+      <p class="label">You're invited to a double celebration</p>
+      <h3 id="invite-title">Daddy Larry's Birthday</h3>
+      <p>Come celebrate the big news and Daddy's birthday with Romaica and Larry.</p>
+    </div>
+    <div class="tear" aria-hidden="true"></div>
+    <div class="details">
+      <div class="detail">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="8" width="30" height="27" rx="5" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2.5"/><path d="M5 16h30" style="stroke:var(--ink)" stroke-width="2.5"/><rect x="5" y="8" width="30" height="8" rx="4" style="fill:var(--it)"/><path d="M13 5v6M27 5v6" style="stroke:var(--ink)" stroke-width="2.5" stroke-linecap="round"/><text x="20" y="31" text-anchor="middle" font-size="12" font-weight="700" font-family="Outfit, sans-serif" style="fill:var(--fg)">21</text></svg>
+        <b>When</b><span>Sat, Nov 21, 2026</span>
+      </div>
+      <div class="detail">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2.5"/><path d="M20 11v9l6 4" fill="none" style="stroke:var(--it)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>Time</b><span>5:00 PM</span>
+      </div>
+      <div class="detail">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 19 20 7l14 12" fill="none" style="stroke:var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17v17h20V17" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><rect x="17" y="24" width="7" height="10" rx="1.5" style="fill:var(--it)"/><path d="M20 15c-2-3-6-1-4 2l4 3 4-3c2-3-2-5-4-2z" style="fill:var(--girl)"/></svg>
+        <b>Where</b><span>Larry's house</span>
+      </div>
+    </div>
+    <p class="see-you">See you there!</p>
+  </section>
+
+  <div class="actions">
+    <button class="btn primary" id="reveal" hidden>Too hard? Skip to the reveal</button>
+    <button class="btn" id="reset" hidden>Play again</button>
+  </div>
+</main>
+
+<script>
+  // The answer is encoded so it isn't readable in the page source or on screen until the reveal.
+  const ANSWER = JSON.parse(atob("eyJrZXkiOiJib3kiLCJ3b3JkIjoiQm95IiwiaGVhZGxpbmUiOiJSb21haWNhICYgTGFycnkgYXJlIGhhdmluZyBhIGJhYnkgYm95ISJ9"));
+  const PARTY = new Date(2026, 10, 21); // Daddy Larry's birthday party
+
+  const $ = (id) => document.getElementById(id);
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const THRESHOLD = .8;    // average share of foil scratched off before the countdown fires
+  const FOIL = .5;         // a swipe removes about 1 - e^-FOIL (40%) of the foil it crosses, whatever the pointer event rate
+  const SKIP_AFTER = 60e3; // the Skip button only shows after a minute of trying
+  let skipTimer = null;
+  const TEASERS = [[0, "Suspense meter"], [.2, "Hmm… pink or blue?"], [.45, "Getting warmer…"], [.7, "Almost there!"], [.88, "Here it comes…"]];
+  let guess = null, started = false, revealed = false, soundOn = true;
+
+  // --- Bunting: flags hung along one sagging string
+  (() => {
+    const N = 15, fills = ["--boy", "--gold", "--girl"];
+    let svg = `<path d="M0 6Q200 46 400 6" fill="none" style="stroke:var(--ink)" stroke-width="2"/>`;
+    for (let i = 0; i < N; i++) {
+      const t = (i + .5) / N, x = 400 * t, y = 6 + 80 * t * (1 - t);
+      svg += `<polygon points="${x - 11},${y} ${x + 11},${y} ${x},${y + 22}" style="fill:var(${fills[i % 3]});stroke:var(--ink);animation-delay:${-i * .2}s" stroke-width="2" stroke-linejoin="round"/>`;
+    }
+    $("bunting").innerHTML = svg;
+  })();
+
+  // --- Sound: synthesized, so nothing to download. Created on first click (browsers block audio before that).
+  let ac = null;
+  const audio = () => {
+    ac ??= new AudioContext();
+    if (ac.state !== "running") ac.resume(); // iOS starts it suspended outside a tap and suspends it after a screen lock
+    return ac;
+  };
+  function tone(freq, at, dur, type = "triangle", vol = .18) {
+    if (!soundOn) return;
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + at);
+    g.gain.exponentialRampToValueAtTime(.001, a.currentTime + at + dur);
+    o.connect(g).connect(a.destination); o.start(a.currentTime + at); o.stop(a.currentTime + at + dur);
+  }
+  function drumroll(seconds) {
+    if (!soundOn) return;
+    const a = audio(), buf = a.createBuffer(1, a.sampleRate * .05, a.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    for (let t = 0; t < seconds; t += .06 - t * .01) {
+      const s = a.createBufferSource(), g = a.createGain();
+      s.buffer = buf; g.gain.value = .12 + t * .08;
+      s.connect(g).connect(a.destination); s.start(a.currentTime + t);
+    }
+  }
+  const heartbeat = () => { tone(70, 0, .12, "sine", .35); tone(60, .16, .14, "sine", .28); };
+  const fanfare = () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .12, i === 3 ? 1.2 : .3));
+  const buzz = (p) => { try { navigator.vibrate?.(p); } catch {} };
+
+  $("sound").addEventListener("click", (e) => {
+    soundOn = !soundOn;
+    e.currentTarget.setAttribute("aria-pressed", String(soundOn));
+    e.currentTarget.textContent = soundOn ? "Sound on" : "Sound off";
+    if (soundOn) audio();
+  });
+
+  // --- Step 1: pick a team. Locked in once scratching starts.
+  document.querySelectorAll(".chip").forEach((chip) => chip.addEventListener("click", () => {
+    if (started) return;
+    const first = !guess;
+    guess = chip.dataset.pick;
+    document.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+    document.body.classList.remove("picked-boy", "picked-girl");
+    document.body.classList.add(`picked-${guess}`);
+    $("guess-note").textContent = `Team ${guess === "boy" ? "Boy" : "Girl"}! The foil is thick, so scratch every spot a few times. No switching once you start.`;
+    $("lock").classList.add("open"); $("lock").inert = true;
+    tone(guess === "boy" ? 440 : 554, 0, .25);
+    if (first) {
+      $("card").classList.add("unlocked"); buzz(30);
+      skipTimer = setTimeout(() => {
+        if (!revealed) { $("reveal").hidden = false; $("guess-note").textContent = "Too hard? A Skip button is now below the card."; }
+      }, SKIP_AFTER);
+    }
+  }));
+
+  $("lock").addEventListener("click", () => {
+    const chips = $("chips");
+    chips.classList.remove("shake"); void chips.offsetWidth; chips.classList.add("shake");
+    $("guess-note").textContent = "Not so fast! Pick Team Boy or Team Girl first.";
+    tone(180, 0, .2, "square", .08); buzz([40, 40, 40]);
+    $("pick-boy").focus();
+  });
+
+  function lockGuess() {
+    if (started) return;
+    started = true;
+    document.querySelectorAll(".chip").forEach((c) => (c.disabled = true));
+    $("guess-note").textContent = `Locked in: Team ${guess === "boy" ? "Boy" : "Girl"}.`;
+  }
+
+  // --- Step 2: scratch card with suspense meter, sparkles, heartbeat and a rumbling card
+  const scratch = $("scratch"), ctx = scratch.getContext("2d", { willReadFrequently: true });
+  let pointer = null, last = null, strokes = 0, teaserAt = 0, coverW = 0;
+
+  function paintCover() {
+    const r = scratch.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+    scratch.width = r.width * dpr; scratch.height = r.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    coverW = r.width;
+    const g = ctx.createLinearGradient(0, 0, r.width, r.height);
+    g.addColorStop(0, css("--boy")); g.addColorStop(1, css("--girl"));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, r.width, r.height);
+    ctx.fillStyle = "rgba(255,255,255,.2)";
+    ctx.font = `${Math.round(r.width / 9)}px ${css("--font-display")}`;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (let y = 0; y < 4; y++) for (let x = 0; x < 6; x++)
+      ctx.fillText("?", (x + (y % 2 ? .9 : .4)) * r.width / 5.5, (y + .5) * r.height / 4);
+    ctx.font = `${Math.round(r.width / 11)}px ${css("--font-display")}`;
+    ctx.fillStyle = "rgba(0,0,0,.35)"; ctx.fillText("Scratch me!", r.width / 2 + 3, r.height / 2 + 3);
+    ctx.fillStyle = "#fff"; ctx.fillText("Scratch me!", r.width / 2, r.height / 2);
+    ctx.lineWidth = Math.max(22, r.width / 16); ctx.lineCap = ctx.lineJoin = "round";
+  }
+
+  function scratchedRatio() {
+    const { data } = ctx.getImageData(0, 0, scratch.width, scratch.height);
+    let left = 0, n = 0;
+    for (let i = 3; i < data.length; i += 4 * 16) { n++; left += Math.max(0, data[i] - 25); }
+    return 1 - left / (n * 230); // foil under ~10% counts as gone: partial erasing never quite reaches zero alpha
+  }
+
+  function setMeter(p) {
+    const pct = Math.min(100, Math.round(p * 100));
+    $("meter-fill").style.width = pct + "%";
+    $("meter-pct").textContent = pct + "%";
+    const [at, text] = TEASERS.filter(([t]) => p >= t).pop();
+    if (at !== teaserAt) { teaserAt = at; $("teaser").textContent = text; if (at) buzz(50); }
+    $("card").classList.toggle("rumble", p >= .7 && p < 1);
+    $("card").classList.toggle("hard", p >= .88 && p < 1);
+  }
+
+  function sparkle(x, y) {
+    if (reduceMotion) return;
+    const colors = [css("--boy"), css("--girl"), css("--gold")];
+    for (let i = 0; i < 3; i++) {
+      const s = document.createElement("span");
+      s.className = "spark";
+      s.style.left = x + "px"; s.style.top = y + "px";
+      s.style.background = colors[(Math.random() * 3) | 0];
+      s.style.setProperty("--dx", (Math.random() - .5) * 90 + "px");
+      s.style.setProperty("--dy", (Math.random() - .3) * 90 + "px");
+      s.addEventListener("animationend", () => s.remove());
+      document.body.append(s);
+    }
+  }
+
+  // Scale to the size the cover was painted at, so a resize mid-game still lines up with the finger.
+  const pos = (e) => { const r = scratch.getBoundingClientRect(), k = coverW / r.width; return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k }; };
+
+  function checkProgress() {
+    const progress = scratchedRatio() / THRESHOLD;
+    setMeter(progress);
+    if (progress >= 1) { pointer = null; reveal(); }
+  }
+
+  scratch.addEventListener("pointerdown", (e) => {
+    if (!guess || revealed || pointer !== null) return; // one finger at a time
+    if (soundOn) audio();
+    lockGuess(); pointer = e.pointerId; last = pos(e); scratch.setPointerCapture(e.pointerId);
+  });
+  scratch.addEventListener("pointermove", (e) => {
+    if (e.pointerId !== pointer || revealed) return;
+    const p = pos(e), lw = ctx.lineWidth, d = Math.hypot(p.x - last.x, p.y - last.y);
+    // Erase in steps of at most a quarter brush, each in proportion to its length, so a fast flick removes no more than a slow swipe.
+    const steps = Math.max(1, Math.ceil(d / (lw / 4)));
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.globalAlpha = FOIL * d / steps / lw;
+    let a = last;
+    for (let i = 1; i <= steps; i++) {
+      const b = { x: last.x + (p.x - last.x) * i / steps, y: last.y + (p.y - last.y) * i / steps };
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      a = b;
+    }
+    last = p;
+    if (++strokes % 3 === 0) sparkle(e.clientX, e.clientY);
+    if (strokes % 6 === 0) tone(900 + Math.random() * 400, 0, .03, "sine", .03);
+    if (strokes % 12 === 0) { heartbeat(); checkProgress(); }
+  });
+  ["pointerup", "pointercancel"].forEach((t) => scratch.addEventListener(t, (e) => {
+    if (e.pointerId !== pointer) return;
+    pointer = null;
+    if (!revealed) checkProgress();
+  }));
+
+  // --- Reveal: 3-2-1 with a drumroll, flash, then the answer, confetti and the invitation
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  async function countdown() {
+    const overlay = document.createElement("div");
+    overlay.className = "countdown"; overlay.setAttribute("aria-hidden", "true");
+    document.body.append(overlay);
+    drumroll(2.7);
+    for (const n of [3, 2, 1]) {
+      overlay.innerHTML = `<p>It's a…</p><span>${n}</span>`;
+      $("announce").textContent = `It's a… ${n}`;
+      buzz(60);
+      await sleep(900);
+    }
+    overlay.remove();
+  }
+
+  async function reveal() {
+    if (revealed || !guess) return;
+    revealed = true;
+    lockGuess(); setMeter(1);
+    clearTimeout(skipTimer); $("reveal").hidden = true;
+    scratch.classList.add("gone");
+    await countdown();
+
+    document.body.style.setProperty("--it", `var(--${ANSWER.key})`);
+    document.body.style.setProperty("--it-soft", `var(--${ANSWER.key}-soft)`);
+    document.body.classList.add("revealed");
+    $("mystery").hidden = true;
+    $("answer-word").textContent = ANSWER.word + "!";
+    $("answer").hidden = false;
+    $("headline").textContent = ANSWER.headline;
+    $("verdict").textContent = guess === ANSWER.key
+      ? `You guessed ${ANSWER.word}. You called it! 🎉`
+      : `You guessed ${guess === "boy" ? "Boy" : "Girl"}. Not this time, but welcome to Team ${ANSWER.word}!`;
+    $("reset").hidden = false;
+    $("result").hidden = false;
+    $("invite").hidden = false;
+    const days = Math.round((PARTY - new Date().setHours(0, 0, 0, 0)) / 864e5);
+    $("invite-countdown").textContent = days > 1 ? `${days} days to go!` : days === 1 ? "Tomorrow!" : days === 0 ? "It's today!" : "";
+    $("announce").textContent = `${ANSWER.headline} ${$("verdict").textContent}`;
+    $("headline").focus({ preventScroll: true });
+    fanfare(); buzz([100, 50, 200]);
+    if (!reduceMotion) {
+      const f = document.createElement("div"); f.className = "flash";
+      document.body.append(f); setTimeout(() => f.remove(), 900);
+      celebrate();
+    }
+  }
+
+  $("reveal").addEventListener("click", reveal);
+  $("reset").addEventListener("click", () => {
+    guess = null; started = revealed = false; strokes = 0; teaserAt = -1; pointer = null;
+    cancelAnimationFrame(confettiFrame); cc.clearRect(0, 0, innerWidth, innerHeight);
+    $("announce").textContent = "";
+    document.body.classList.remove("revealed", "picked-boy", "picked-girl");
+    document.body.style.removeProperty("--it"); document.body.style.removeProperty("--it-soft");
+    document.querySelectorAll(".chip").forEach((c) => { c.disabled = false; c.setAttribute("aria-pressed", "false"); });
+    $("guess-note").textContent = "You need to pick a team to unlock the card.";
+    $("lock").classList.remove("open"); $("lock").inert = false;
+    $("card").classList.remove("unlocked");
+    scratch.classList.remove("gone");
+    $("mystery").hidden = false; $("answer").hidden = true;
+    clearTimeout(skipTimer); $("reveal").hidden = true; $("reset").hidden = true; $("result").hidden = true; $("invite").hidden = true;
+    setMeter(0); paintCover();
+    scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    $("pick-boy").focus({ preventScroll: true });
+  });
+
+  // --- Celebration in the answer's color: two confetti cannons, a second volley, and rising balloons
+  const cv = $("confetti"), cc = cv.getContext("2d");
+  let confettiFrame = 0;
+  function celebrate() {
+    const dpr = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; cc.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const ink = css("--ink");
+    const colors = [css(`--${ANSWER.key}`), css(`--${ANSWER.key}-soft`), css("--gold"), "#ffffff"];
+    const pick = () => colors[(Math.random() * colors.length) | 0];
+    const bits = [];
+    const volley = (delay) => [[0, 1], [W, -1]].forEach(([x0, dir]) => {
+      for (let i = 0; i < 110; i++) bits.push({
+        x: x0, y: H, delay,
+        vx: dir * (6 + Math.random() * 12), vy: -(14 + Math.random() * 14),
+        w: 6 + Math.random() * 6, h: 8 + Math.random() * 8,
+        a: Math.random() * Math.PI, va: (Math.random() - .5) * .3, c: pick(),
+      });
+    });
+    volley(0); volley(700);
+    const balloons = Array.from({ length: 14 }, (_, i) => ({
+      x: (i + .5) * W / 14 + (Math.random() - .5) * 30, y: H + 60 + Math.random() * 300,
+      r: 22 + Math.random() * 14, vy: 2 + Math.random() * 2.2, sway: Math.random() * 6,
+      c: i % 3 ? css(`--${ANSWER.key}`) : pick(),
+    }));
+    const start = performance.now(), DURATION = 9000;
+    let prev = start;
+    cancelAnimationFrame(confettiFrame);
+    (function frame(t) {
+      const el = t - start, k = Math.min(3, (t - prev) / 16.7); // motion is per 60 Hz frame, so 120 Hz screens aren't twice as fast
+      prev = t;
+      cc.clearRect(0, 0, W, H);
+      for (const b of balloons) {
+        b.y -= b.vy * k;
+        const x = b.x + Math.sin(el / 600 + b.sway) * 12;
+        cc.strokeStyle = ink; cc.lineWidth = 1.5;
+        cc.beginPath(); cc.moveTo(x, b.y + b.r * 1.2); cc.quadraticCurveTo(x - 8, b.y + b.r * 2, x, b.y + b.r * 3); cc.stroke();
+        cc.fillStyle = b.c; cc.lineWidth = 2.5;
+        cc.beginPath(); cc.ellipse(x, b.y, b.r, b.r * 1.2, 0, 0, Math.PI * 2); cc.fill(); cc.stroke();
+        cc.fillStyle = "rgba(255,255,255,.5)"; cc.beginPath(); cc.ellipse(x - b.r * .35, b.y - b.r * .45, b.r * .18, b.r * .3, -.5, 0, Math.PI * 2); cc.fill();
+      }
+      for (const b of bits) {
+        if (el < b.delay) continue;
+        b.vy += .38 * k; b.vx *= .985 ** k; b.x += b.vx * k; b.y += b.vy * k; b.a += b.va * k;
+        cc.save(); cc.translate(b.x, b.y); cc.rotate(b.a);
+        cc.fillStyle = b.c; cc.fillRect(-b.w / 2, -b.h / 2, b.w, Math.cos(b.a * 2) * b.h); cc.restore();
+      }
+      if (el < DURATION) confettiFrame = requestAnimationFrame(frame); else cc.clearRect(0, 0, W, H);
+    })(start);
+  }
+
+  // Repaint after fonts load (cover text uses the display face) and on resize, unless already scratched.
+  document.fonts.load('1em "Bagel Fat One"').then(() => { if (!started) paintCover(); });
+  addEventListener("resize", () => { if (!started) paintCover(); });
+  paintCover();
+</script>
+</body>
+</html>
